@@ -7,6 +7,7 @@ import {
   useKonvaImageEditor,
 } from "../../contexts/konva-image-editor";
 import RenderShape from "./render-shape";
+import type { ScallopedRectangleShape } from "./shapes/render-scalloped-rectangle";
 
 const DELETE_KEY = "Backspace";
 
@@ -57,7 +58,7 @@ export default function MarkupImage() {
   }
 
   function handleAddRectangle() {
-    const newReactangle: Konva.RectConfig = {
+    const newRectangle: Konva.RectConfig = {
       x: 100,
       y: 100,
       width: 100,
@@ -67,7 +68,22 @@ export default function MarkupImage() {
       fill: "transparent",
       id: `rectangle-${Date.now()}`,
     };
-    addShape({ type: IEKonvaShapeType.RECTANGLE, shape: newReactangle });
+    addShape({ type: IEKonvaShapeType.RECTANGLE, shape: newRectangle });
+  }
+
+  function handleAddCloud() {
+    const newCloudRectangle: ScallopedRectangleShape = {
+      x: 10,
+      y: 10,
+      width: 100,
+      height: 100,
+      stroke: strokeColor,
+      strokeWidth: strokeWidth,
+      fill: "transparent",
+      id: `cloud-${Date.now()}`,
+      scallops: 20,
+    };
+    addShape({ type: IEKonvaShapeType.CLOUD, shape: newCloudRectangle });
   }
 
   function handleStageClick(event: Konva.KonvaEventObject<MouseEvent>) {
@@ -79,7 +95,8 @@ export default function MarkupImage() {
     // Do nothing if clicked NOT on our rectangles, arrows or other shapes
     if (
       event.target.getClassName() !== "Rect" &&
-      event.target.getClassName() !== "Arrow"
+      event.target.getClassName() !== "Arrow" &&
+      event.target.name() !== "ScallopedRectangle"
     ) {
       setSelectedShapeId(undefined);
       return;
@@ -175,7 +192,10 @@ export default function MarkupImage() {
           >
             <RectangleHorizontal className="size-5" />
           </button>
-          <button className="h-8 w-8 flex items-center justify-center border rounded-sm border-gray-400 cursor-pointer">
+          <button
+            onClick={handleAddCloud}
+            className="h-8 w-8 flex items-center justify-center border rounded-sm border-gray-400 cursor-pointer"
+          >
             <Badge className="size-5" />
           </button>
         </div>

@@ -7,6 +7,7 @@ import {
 } from "../../contexts/konva-image-editor";
 import RenderArrow from "./shapes/render-arrow";
 import RenderRectangle from "./shapes/render-rectangle";
+import ScallopedRectangle from "./shapes/render-scalloped-rectangle";
 
 export default function RenderShape() {
   const { shapes } = useKonvaImageEditor();
@@ -19,6 +20,12 @@ export default function RenderShape() {
     () => shapes.filter((shape) => shape.type === IEKonvaShapeType.ARROW),
     [shapes]
   );
+  const cloudShapes = useMemo(
+    () => shapes.filter((shape) => shape.type === IEKonvaShapeType.CLOUD),
+    [shapes]
+  );
+
+  console.log("cloudShapes: ", cloudShapes);
 
   return (
     <Group>
@@ -27,6 +34,12 @@ export default function RenderShape() {
       ))}
       {arrowShapes.map((shape, index) => (
         <RenderArrow key={index} shape={shape.shape as Konva.ArrowConfig} />
+      ))}
+      {cloudShapes.map((shape, index) => (
+        <ScallopedRectangle
+          key={index}
+          shape={shape.shape as Konva.RectConfig}
+        />
       ))}
     </Group>
   );

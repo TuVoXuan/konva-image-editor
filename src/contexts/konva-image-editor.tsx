@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import Konva from "konva";
+import type { ScallopedRectangleShape } from "../components/markup-image/shapes/render-scalloped-rectangle";
 
 export const IEKonvaShapeType = {
   RECTANGLE: "rectangle",
@@ -10,7 +11,10 @@ export const IEKonvaShapeType = {
 export type IEKonvaShapeType =
   (typeof IEKonvaShapeType)[keyof typeof IEKonvaShapeType];
 
-export type IEKonvaShape = Konva.RectConfig | Konva.ArrowConfig;
+export type IEKonvaShape =
+  | Konva.RectConfig
+  | Konva.ArrowConfig
+  | ScallopedRectangleShape;
 
 export type IEKonvaShapeWithType = {
   type: IEKonvaShapeType;
