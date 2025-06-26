@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useRef, useState, useCallback } from "react";
 import { Stage, Layer, Image, Rect, Circle } from "react-konva";
 import Konva from "konva";
+import { useKonvaImageEditor } from "../../contexts/konva-image-editor";
 
 const CropImageKonva: React.FC = () => {
+  const { setCroppedImgURL } = useKonvaImageEditor();
   const stageRef = useRef<Konva.Stage>(null);
   const [image, setImage] = useState<HTMLImageElement | null>(null);
   const [cropArea, setCropArea] = useState({
@@ -27,13 +30,9 @@ const CropImageKonva: React.FC = () => {
     img.onload = () => setImage(img);
   }, []);
 
-  // Download cropped image
-  const downloadCroppedImage = useCallback(() => {
+  // crop image
+  const cropImage = useCallback(() => {
     if (!stageRef.current || !image) return;
-
-    // Calculate scale factors between display size and original image size
-    // const scaleX = image.naturalWidth / STAGE_WIDTH;
-    // const scaleY = image.naturalHeight / STAGE_HEIGHT;
 
     // Convert crop position and size to original image coordinates
     const originalCropX = cropArea.x;
@@ -43,7 +42,6 @@ const CropImageKonva: React.FC = () => {
 
     // Get the layer and temporarily hide UI elements
     const layer = stageRef.current.getLayers()[0];
-    console.log("layer: ", layer);
     const cropRect = layer.findOne(".crop-rect");
     const resizehandlerNames = [
       "top-left",
@@ -57,7 +55,6 @@ const CropImageKonva: React.FC = () => {
 
     // Hide UI elements
     if (cropRect) cropRect.visible(false);
-    console.log("resizeHandles: ", resizeHandles);
 
     resizeHandles.forEach((handle) => {
       if (handle) {
@@ -75,6 +72,7 @@ const CropImageKonva: React.FC = () => {
       pixelRatio: 1,
       mimeType: "image/png",
     });
+    setCroppedImgURL(dataURL);
 
     // Show UI elements again
     if (cropRect) cropRect.visible(true);
@@ -85,12 +83,12 @@ const CropImageKonva: React.FC = () => {
     });
     layer.batchDraw();
 
-    const link = document.createElement("a");
-    link.download = "cropped-image.png";
-    link.href = dataURL;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // const link = document.createElement("a");
+    // link.download = "cropped-image.png";
+    // link.href = dataURL;
+    // document.body.appendChild(link);
+    // link.click();
+    // document.body.removeChild(link);
   }, [cropArea, image]);
 
   // Handle crop rectangle drag
@@ -223,18 +221,19 @@ const CropImageKonva: React.FC = () => {
 
       <div className="mb-4">
         <button
-          onClick={downloadCroppedImage}
+          onClick={cropImage}
           className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-medium"
         >
-          Download Cropped Image ({Math.round(cropArea.width)}×
-          {Math.round(cropArea.height)})
+          Crop Image ({Math.round(cropArea.width)}×{Math.round(cropArea.height)}
+          )
         </button>
       </div>
 
       <div className="mb-4 p-3 bg-blue-50 rounded">
         <p className="text-sm text-blue-700">
           <strong>Instructions:</strong> Drag the rectangle to move it. Drag the
-          corner circles to resize. Click "Download" to get your cropped image.
+          corner circles to resize. Click "Crop Image" to get your cropped
+          image.
         </p>
       </div>
 
