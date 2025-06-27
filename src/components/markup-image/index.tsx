@@ -146,6 +146,21 @@ export default function MarkupImage() {
     };
   }, [selectedShapeId, removeShape]);
 
+  function handleDownloadMarkUpImage() {
+    if (!stageRef.current) return;
+    const dataURL = stageRef.current.toDataURL({
+      pixelRatio: 1,
+      mimeType: "image/png",
+    });
+
+    const link = document.createElement("a");
+    link.href = dataURL;
+    link.download = "marked-up-image.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   return (
     <div className="p-5">
       <button
@@ -153,6 +168,12 @@ export default function MarkupImage() {
         className="bg-blue-400 text-white p-3 rounded-md"
       >
         Back to Crop Image screen
+      </button>
+      <button
+        onClick={handleDownloadMarkUpImage}
+        className="bg-blue-400 text-white p-3 rounded-md ml-5"
+      >
+        Download marked up image
       </button>
       <h1 className="text-2xl font-bold mb-2">Markup Image</h1>
       <div className="bg-blue-400/50 p-4 rounded-sm mb-5 w-fit">
