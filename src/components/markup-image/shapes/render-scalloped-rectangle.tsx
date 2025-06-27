@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Konva from "konva";
 import { useEffect, useRef, useState } from "react";
-import { Shape, Transformer } from "react-konva";
+import { Group, Rect, Shape, Transformer } from "react-konva";
 import {
   useKonvaImageEditor,
   type IEKonvaShape,
@@ -22,71 +23,69 @@ export default function ScallopedRectangle({
 }: RenderSpecificShapeProps) {
   const { selectedShapeId, updateShape } = useKonvaImageEditor();
   const transformRef = useRef<Konva.Transformer>(null);
-  const scallopedRectRef = useRef<Konva.Shape>(null);
+  const rectRef = useRef<Konva.Rect>(null);
   const [isDraggable, setIsDraggable] = useState<boolean>(draggable);
 
-  useEffect(() => {
-    if (transformRef.current && scallopedRectRef.current && shapeInfo.id) {
-      console.log("selectedShapeId: ", selectedShapeId);
-      console.log("shapeInfo.id: ", shapeInfo.id);
+  const prevRotation = useRef<number>(shapeInfo.rotation || 0);
+  const prevScaleX = useRef<number>(1);
+  const prevScaleY = useRef<number>(1);
 
+  useEffect(() => {
+    if (transformRef.current && rectRef.current && shapeInfo.id) {
       if (selectedShapeId === shapeInfo.id) {
-        // If the shape is selected, enable transformation
-        transformRef.current.nodes([scallopedRectRef.current]);
+        transformRef.current.nodes([rectRef.current]);
+        transformRef.current.getLayer()?.batchDraw();
         setIsDraggable(true);
       } else {
         transformRef.current.nodes([]);
         setIsDraggable(false);
       }
     }
-  }, [transformRef, scallopedRectRef, selectedShapeId, shapeInfo.id]);
+  }, [transformRef, rectRef, selectedShapeId, shapeInfo.id]);
 
   const sceneFunc = (context: any, shape: any) => {
-    const scallopsPerSide = shapeInfo.scallops;
-    const radius =
-      Math.min(shapeInfo.width || 0, shapeInfo.height || 0) /
-      (scallopsPerSide * 4);
+    const radius = shapeInfo.scallopRadius || 5;
+    const width = shapeInfo.width || 0;
+    const height = shapeInfo.height || 0;
 
-    context.beginPath();
+    // Draw scalloped border
+    // Top edge
+    const scallopsX = Math.max(2, Math.floor(width / (radius * 2)));
+    const scallopsY = Math.max(2, Math.floor(height / (radius * 2)));
 
-    // Top edge - half circles pointing outward
-    const topStepSize = (shapeInfo.width || 0) / scallopsPerSide;
-    context.moveTo(0, 0);
-    for (let i = 0; i < scallopsPerSide; i++) {
-      const centerX = i * topStepSize + topStepSize / 2;
+    for (let i = 0; i < scallopsX; i++) {
+      const centerX = i * (width / scallopsX) + width / scallopsX / 2;
+      context.save();
+      context.beginPath();
       context.arc(centerX, 0, radius, Math.PI, 0, false);
+      context.stroke();
+      context.restore();
     }
-
-    // Right edge - half circles pointing outward
-    const rightStepSize = (shapeInfo.height || 0) / scallopsPerSide;
-    for (let i = 0; i < scallopsPerSide; i++) {
-      const centerY = i * rightStepSize + rightStepSize / 2;
-      context.arc(
-        shapeInfo.width,
-        centerY,
-        radius,
-        Math.PI * 1.5,
-        Math.PI * 0.5,
-        false
-      );
+    for (let i = 0; i < scallopsY; i++) {
+      const centerY = i * (height / scallopsY) + height / scallopsY / 2;
+      context.save();
+      context.beginPath();
+      context.arc(width, centerY, radius, Math.PI * 1.5, Math.PI * 0.5, false);
+      context.stroke();
+      context.restore();
     }
-
-    // Bottom edge - half circles pointing outward
-    const bottomStepSize = (shapeInfo.width || 0) / scallopsPerSide;
-    for (let i = scallopsPerSide - 1; i >= 0; i--) {
-      const centerX = i * bottomStepSize + bottomStepSize / 2;
-      context.arc(centerX, shapeInfo.height, radius, 0, Math.PI, false);
+    for (let i = 0; i < scallopsX; i++) {
+      const centerX = width - (i * (width / scallopsX) + width / scallopsX / 2);
+      context.save();
+      context.beginPath();
+      context.arc(centerX, height, radius, 0, Math.PI, false);
+      context.stroke();
+      context.restore();
     }
-
-    // Left edge - half circles pointing outward
-    const leftStepSize = (shapeInfo.height || 0) / scallopsPerSide;
-    for (let i = scallopsPerSide - 1; i >= 0; i--) {
-      const centerY = i * leftStepSize + leftStepSize / 2;
+    for (let i = 0; i < scallopsY; i++) {
+      const centerY =
+        height - (i * (height / scallopsY) + height / scallopsY / 2);
+      context.save();
+      context.beginPath();
       context.arc(0, centerY, radius, Math.PI * 0.5, Math.PI * 1.5, false);
+      context.stroke();
+      context.restore();
     }
-
-    context.closePath();
-    context.fillStrokeShape(shape);
   };
 
   function handleDragEnd(e: Konva.KonvaEventObject<DragEvent>) {
@@ -101,15 +100,84 @@ export default function ScallopedRectangle({
     }
   }
 
+  function handleTransform() {
+    const node = rectRef.current;
+    if (!node) return;
+
+    const scaleX = node.scaleX();
+    const scaleY = node.scaleY();
+    const rotation = node.rotation();
+
+    if (!shapeInfo.id) return;
+
+    // Detect if rotation changed
+    const rotated = prevRotation.current !== rotation;
+    // Detect if scale changed
+    const scaled =
+      prevScaleX.current !== scaleX || prevScaleY.current !== scaleY;
+
+    if (scaled) {
+      // If scaled, update width/height and reset scale
+      updateShape(shapeInfo.id, {
+        ...shapeInfo,
+        x: node.x(),
+        y: node.y(),
+        rotation: node.rotation(),
+        width: Math.max(5, node.width() * scaleX),
+        height: Math.max(5, node.height() * scaleY),
+      });
+    } else if (rotated) {
+      node.scaleX(1);
+      node.scaleY(1);
+      // If only rotated, just update rotation
+      updateShape(shapeInfo.id, {
+        ...shapeInfo,
+        x: node.x(),
+        y: node.y(),
+        rotation: node.rotation(),
+      });
+    }
+
+    // Update refs
+    prevRotation.current = rotation;
+    prevScaleX.current = node.scaleX();
+    prevScaleY.current = node.scaleY();
+  }
+
   return (
     <>
       <Shape
-        name="ScallopedRectangle"
-        ref={scallopedRectRef}
-        {...shapeInfo}
         sceneFunc={sceneFunc}
+        fill="transparent"
+        stroke={shapeInfo.stroke || "black"}
+        strokeWidth={shapeInfo.strokeWidth || 2}
+        width={shapeInfo.width}
+        height={shapeInfo.height}
+        x={shapeInfo.x}
+        y={shapeInfo.y}
+        rotation={shapeInfo.rotation || 0}
+      />
+      <Rect
+        {...shapeInfo}
         draggable={isDraggable}
+        ref={rectRef}
+        opacity={0}
+        onDragMove={() => {
+          const node = rectRef.current;
+          if (!node) return;
+          if (!shapeInfo.id) return;
+          updateShape(shapeInfo.id, {
+            ...shapeInfo,
+            x: node.x(),
+            y: node.y(),
+          });
+        }}
         onDragEnd={handleDragEnd}
+        onTransform={handleTransform}
+        onTransformEnd={() => {
+          if (!shapeInfo.id) return;
+          updateShape(shapeInfo.id, shapeInfo);
+        }}
       />
       <Transformer ref={transformRef} />
     </>

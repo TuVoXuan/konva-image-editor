@@ -73,8 +73,8 @@ export default function MarkupImage() {
 
   function handleAddCloud() {
     const newCloudRectangle: ScallopedRectangleShape = {
-      x: 10,
-      y: 10,
+      x: 100,
+      y: 100,
       width: 100,
       height: 100,
       stroke: strokeColor,
@@ -92,11 +92,13 @@ export default function MarkupImage() {
       setSelectedShapeId(undefined);
     }
 
+    console.log("event.target.name: ", event.target.name());
+    console.log("event.target.getClassName: ", event.target.getClassName());
+
     // Do nothing if clicked NOT on our rectangles, arrows or other shapes
     if (
       event.target.getClassName() !== "Rect" &&
-      event.target.getClassName() !== "Arrow" &&
-      event.target.name() !== "ScallopedRectangle"
+      event.target.getClassName() !== "Arrow"
     ) {
       setSelectedShapeId(undefined);
       return;
