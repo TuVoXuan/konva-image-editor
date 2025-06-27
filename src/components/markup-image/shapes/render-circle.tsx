@@ -1,36 +1,36 @@
-import Konva from "konva";
-import { useEffect, useRef, useState } from "react";
-import { Arrow, Transformer } from "react-konva";
+import { Circle, Transformer } from "react-konva";
 import {
   useKonvaImageEditor,
   type IEKonvaShape,
 } from "../../../contexts/konva-image-editor";
+import { useEffect, useRef, useState } from "react";
+import type Konva from "konva";
 
 interface RenderSpecificShapeProps {
   shape: IEKonvaShape;
   draggable?: boolean;
 }
 
-export default function RenderArrow({
+export default function RenderCircle({
   shape,
   draggable = false,
 }: RenderSpecificShapeProps) {
-  const { selectedShapeId, updateShape } = useKonvaImageEditor();
   const transformRef = useRef<Konva.Transformer>(null);
-  const arrowRef = useRef<Konva.Arrow>(null);
+  const circleRef = useRef<Konva.Circle>(null);
+  const { selectedShapeId, updateShape } = useKonvaImageEditor();
   const [isDraggable, setIsDraggable] = useState<boolean>(draggable);
 
   useEffect(() => {
-    if (transformRef.current && arrowRef.current) {
+    if (transformRef.current && circleRef.current) {
       if (selectedShapeId === shape.id) {
-        transformRef.current.nodes([arrowRef.current]);
+        transformRef.current.nodes([circleRef.current]);
         setIsDraggable(true);
       } else {
         transformRef.current.nodes([]);
         setIsDraggable(false);
       }
     }
-  }, [transformRef, arrowRef, selectedShapeId]);
+  }, [transformRef, circleRef, selectedShapeId]);
 
   function handleDragEnd(e: Konva.KonvaEventObject<DragEvent>) {
     const { x, y } = e.target.position();
@@ -46,10 +46,10 @@ export default function RenderArrow({
 
   return (
     <>
-      <Arrow
+      <Circle
         {...(shape as Konva.ArrowConfig)}
         draggable={isDraggable}
-        ref={arrowRef}
+        ref={circleRef}
         onDragEnd={handleDragEnd}
       />
       <Transformer ref={transformRef} />

@@ -8,6 +8,7 @@ import {
 import RenderArrow from "./shapes/render-arrow";
 import RenderRectangle from "./shapes/render-rectangle";
 import ScallopedRectangle from "./shapes/render-scalloped-rectangle";
+import RenderCircle from "./shapes/render-circle";
 
 export default function RenderShape() {
   const { shapes } = useKonvaImageEditor();
@@ -25,6 +26,11 @@ export default function RenderShape() {
     [shapes]
   );
 
+  const circleShapes = useMemo(
+    () => shapes.filter((shape) => shape.type === IEKonvaShapeType.CIRCLE),
+    [shapes]
+  );
+
   return (
     <Group>
       {rectShapes.map((shape, index) => (
@@ -38,6 +44,9 @@ export default function RenderShape() {
           key={index}
           shape={shape.shape as Konva.RectConfig}
         />
+      ))}
+      {circleShapes.map((shape, index) => (
+        <RenderCircle key={index} shape={shape.shape as Konva.CircleConfig} />
       ))}
     </Group>
   );

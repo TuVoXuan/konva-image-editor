@@ -1,5 +1,5 @@
 import type Konva from "konva";
-import { Badge, MoveUpRight, RectangleHorizontal } from "lucide-react";
+import { Badge, Circle, MoveUpRight, RectangleHorizontal } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 import { Image, Layer, Stage } from "react-konva";
 import {
@@ -84,6 +84,19 @@ export default function MarkupImage() {
     addShape({ type: IEKonvaShapeType.CLOUD, shape: newCloudRectangle });
   }
 
+  function handleAddCircle() {
+    const newCircle: Konva.CircleConfig = {
+      x: 100,
+      y: 100,
+      radius: 50,
+      stroke: strokeColor,
+      strokeWidth: strokeWidth,
+      fill: "transparent",
+      id: `circle-${Date.now()}`,
+    };
+    addShape({ type: IEKonvaShapeType.CIRCLE, shape: newCircle });
+  }
+
   function handleStageClick(event: Konva.KonvaEventObject<MouseEvent>) {
     // If click on empty area - remove all selections
     if (event.target === event.target.getStage()) {
@@ -93,7 +106,8 @@ export default function MarkupImage() {
     // Do nothing if clicked NOT on our rectangles, arrows or other shapes
     if (
       event.target.getClassName() !== "Rect" &&
-      event.target.getClassName() !== "Arrow"
+      event.target.getClassName() !== "Arrow" &&
+      event.target.getClassName() !== "Circle"
     ) {
       setSelectedShapeId(undefined);
       return;
@@ -194,6 +208,13 @@ export default function MarkupImage() {
             className="h-8 w-8 flex items-center justify-center border rounded-sm border-gray-400 cursor-pointer"
           >
             <Badge className="size-5" />
+          </button>
+
+          <button
+            onClick={handleAddCircle}
+            className="h-8 w-8 flex items-center justify-center border rounded-sm border-gray-400 cursor-pointer"
+          >
+            <Circle className="size-5" />
           </button>
         </div>
 

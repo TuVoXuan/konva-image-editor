@@ -5,12 +5,16 @@ export const IEKonvaShapeType = {
   RECTANGLE: "rectangle",
   ARROW: "arrow",
   CLOUD: "cloud",
+  CIRCLE: "circle",
 } as const;
 
 export type IEKonvaShapeType =
   (typeof IEKonvaShapeType)[keyof typeof IEKonvaShapeType];
 
-export type IEKonvaShape = Konva.RectConfig | Konva.ArrowConfig;
+export type IEKonvaShape =
+  | Konva.RectConfig
+  | Konva.ArrowConfig
+  | Konva.CircleConfig;
 
 export type IEKonvaShapeWithType = {
   type: IEKonvaShapeType;

@@ -1,10 +1,10 @@
+import type Konva from "konva";
 import { useEffect, useRef, useState } from "react";
+import { Rect, Transformer } from "react-konva";
 import {
   useKonvaImageEditor,
   type IEKonvaShape,
 } from "../../../contexts/konva-image-editor";
-import type Konva from "konva";
-import { Group, Rect, Transformer } from "react-konva";
 
 interface RenderSpecificShapeProps {
   shape: IEKonvaShape;
@@ -46,7 +46,7 @@ export default function RenderRectangle({
   }
 
   return (
-    <Group>
+    <>
       <Rect
         {...(shape as Konva.RectConfig)}
         draggable={isDraggable}
@@ -54,6 +54,6 @@ export default function RenderRectangle({
         onDragEnd={handleDragEnd}
       />
       <Transformer ref={transformRef} />
-    </Group>
+    </>
   );
 }
