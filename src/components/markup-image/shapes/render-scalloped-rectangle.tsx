@@ -2,16 +2,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Konva from "konva";
 import { useEffect, useRef, useState } from "react";
-import { Group, Rect, Shape, Transformer } from "react-konva";
+import { Rect, Shape, Transformer } from "react-konva";
 import {
   useKonvaImageEditor,
   type IEKonvaShape,
 } from "../../../contexts/konva-image-editor";
-
-export type ScallopedRectangleShape = Konva.RectConfig & {
-  scallops?: number;
-};
-
 interface RenderSpecificShapeProps {
   shape: IEKonvaShape;
   draggable?: boolean;
@@ -47,6 +42,10 @@ export default function ScallopedRectangle({
     const radius = shapeInfo.scallopRadius || 5;
     const width = shapeInfo.width || 0;
     const height = shapeInfo.height || 0;
+
+    // Set stroke style and width from shapeInfo
+    context.strokeStyle = shapeInfo.stroke || "black";
+    context.lineWidth = shapeInfo.strokeWidth || 2;
 
     // Draw scalloped border
     // Top edge
@@ -149,8 +148,6 @@ export default function ScallopedRectangle({
       <Shape
         sceneFunc={sceneFunc}
         fill="transparent"
-        stroke={shapeInfo.stroke || "black"}
-        strokeWidth={shapeInfo.strokeWidth || 2}
         width={shapeInfo.width}
         height={shapeInfo.height}
         x={shapeInfo.x}

@@ -7,7 +7,6 @@ import {
   useKonvaImageEditor,
 } from "../../contexts/konva-image-editor";
 import RenderShape from "./render-shape";
-import type { ScallopedRectangleShape } from "./shapes/render-scalloped-rectangle";
 
 const DELETE_KEY = "Backspace";
 
@@ -72,7 +71,7 @@ export default function MarkupImage() {
   }
 
   function handleAddCloud() {
-    const newCloudRectangle: ScallopedRectangleShape = {
+    const newCloudRectangle: Konva.RectConfig = {
       x: 100,
       y: 100,
       width: 100,
@@ -81,7 +80,6 @@ export default function MarkupImage() {
       strokeWidth: strokeWidth,
       fill: "transparent",
       id: `cloud-${Date.now()}`,
-      scallops: 20,
     };
     addShape({ type: IEKonvaShapeType.CLOUD, shape: newCloudRectangle });
   }
@@ -91,9 +89,6 @@ export default function MarkupImage() {
     if (event.target === event.target.getStage()) {
       setSelectedShapeId(undefined);
     }
-
-    console.log("event.target.name: ", event.target.name());
-    console.log("event.target.getClassName: ", event.target.getClassName());
 
     // Do nothing if clicked NOT on our rectangles, arrows or other shapes
     if (

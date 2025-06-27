@@ -25,8 +25,6 @@ export default function RenderShape() {
     [shapes]
   );
 
-  console.log("cloudShapes: ", cloudShapes);
-
   return (
     <Group>
       {rectShapes.map((shape, index) => (
