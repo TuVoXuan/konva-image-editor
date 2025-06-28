@@ -1,69 +1,27 @@
-# React + TypeScript + Vite
+# 🖼️ Image Crop & Markup Demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple web app that allows users to:
 
-Currently, two official plugins are available:
+- Crop an image  
+- Draw markup shapes on the cropped image  
+- Customize each shape’s stroke width, stroke color, rotation, and scale  
+- Download the final result as an image
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[👉 Live Demo](https://drive.google.com/file/d/1z5IDmk5OxW1AJtkjEFKi2D3MVz9GkJZW/view?usp=sharing)
 
-## Expanding the ESLint configuration
+## ✨ Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Image Crop:** Upload and crop any image to focus on a specific area.
+- **Shape Markup:** Add customizable shapes on the cropped image.
+- **Customization Options:**
+  - Change **stroke width**
+  - Change **stroke color**
+  - **Rotate** and **scale** the shapes
+- **Download Result:** Export the final annotated image with all markups applied.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📦 Tech Stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- **React** (with TypeScript)
+- **Konva.js** for canvas drawing
+- **React-Konva** for React bindings to Konva
+- **Tailwind CSS** for styling
