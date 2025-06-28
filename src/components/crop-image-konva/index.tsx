@@ -276,6 +276,18 @@ const CropImageKonva: React.FC = () => {
               onDragMove={handleResizeHandleDrag}
               onDragStart={() => setIsResizing(true)}
               onDragEnd={() => setIsResizing(false)}
+              onMouseEnter={(e: Konva.KonvaEventObject<MouseEvent>) => {
+                const container = e.target.getStage()?.container();
+                if (container) {
+                  container.style.cursor = "pointer";
+                }
+              }}
+              onMouseLeave={(e: Konva.KonvaEventObject<MouseEvent>) => {
+                const container = e.target.getStage()?.container();
+                if (container) {
+                  container.style.cursor = "default";
+                }
+              }}
             />
 
             <Circle
@@ -291,6 +303,18 @@ const CropImageKonva: React.FC = () => {
               onDragMove={handleResizeHandleDrag}
               onDragStart={() => setIsResizing(true)}
               onDragEnd={() => setIsResizing(false)}
+              onMouseEnter={(e: Konva.KonvaEventObject<MouseEvent>) => {
+                const container = e.target.getStage()?.container();
+                if (container) {
+                  container.style.cursor = "pointer";
+                }
+              }}
+              onMouseLeave={(e: Konva.KonvaEventObject<MouseEvent>) => {
+                const container = e.target.getStage()?.container();
+                if (container) {
+                  container.style.cursor = "default";
+                }
+              }}
             />
 
             <Circle
@@ -306,6 +330,18 @@ const CropImageKonva: React.FC = () => {
               onDragMove={handleResizeHandleDrag}
               onDragStart={() => setIsResizing(true)}
               onDragEnd={() => setIsResizing(false)}
+              onMouseEnter={(e: Konva.KonvaEventObject<MouseEvent>) => {
+                const container = e.target.getStage()?.container();
+                if (container) {
+                  container.style.cursor = "pointer";
+                }
+              }}
+              onMouseLeave={(e: Konva.KonvaEventObject<MouseEvent>) => {
+                const container = e.target.getStage()?.container();
+                if (container) {
+                  container.style.cursor = "default";
+                }
+              }}
             />
 
             <Circle
@@ -321,6 +357,18 @@ const CropImageKonva: React.FC = () => {
               onDragMove={handleResizeHandleDrag}
               onDragStart={() => setIsResizing(true)}
               onDragEnd={() => setIsResizing(false)}
+              onMouseEnter={(e: Konva.KonvaEventObject<MouseEvent>) => {
+                const container = e.target.getStage()?.container();
+                if (container) {
+                  container.style.cursor = "pointer";
+                }
+              }}
+              onMouseLeave={(e: Konva.KonvaEventObject<MouseEvent>) => {
+                const container = e.target.getStage()?.container();
+                if (container) {
+                  container.style.cursor = "default";
+                }
+              }}
             />
           </Layer>
         </Stage>
