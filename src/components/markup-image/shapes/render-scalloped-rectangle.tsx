@@ -38,7 +38,7 @@ export default function ScallopedRectangle({
     }
   }, [transformRef, rectRef, selectedShapeId, shapeInfo.id]);
 
-  const sceneFunc = (context: any, shape: any) => {
+  const sceneFunc = (context: any, _shape: any) => {
     const radius = shapeInfo.scallopRadius || 5;
     const width = shapeInfo.width || 0;
     const height = shapeInfo.height || 0;

@@ -14,8 +14,8 @@ const CropImageKonva: React.FC = () => {
     width: 200,
     height: 200,
   });
-  const [isDragging, setIsDragging] = useState(false);
-  const [isResizing, setIsResizing] = useState(false);
+  const [_isDragging, setIsDragging] = useState(false);
+  const [_isResizing, setIsResizing] = useState(false);
 
   const MIN_SIZE = 50;
   const STAGE_WIDTH = 600;
@@ -133,10 +133,10 @@ const CropImageKonva: React.FC = () => {
           );
           break;
         case "bottom-left": {
-          const newWidth = Math.max(
-            MIN_SIZE,
-            cropArea.x + cropArea.width - pos.x
-          );
+          // const newWidth = Math.max(
+          //   MIN_SIZE,
+          //   cropArea.x + cropArea.width - pos.x
+          // );
           const newX = Math.max(
             0,
             Math.min(pos.x, cropArea.x + cropArea.width - MIN_SIZE)
@@ -150,10 +150,10 @@ const CropImageKonva: React.FC = () => {
           break;
         }
         case "top-right": {
-          const newHeight = Math.max(
-            MIN_SIZE,
-            cropArea.y + cropArea.height - pos.y
-          );
+          // const newHeight = Math.max(
+          //   MIN_SIZE,
+          //   cropArea.y + cropArea.height - pos.y
+          // );
           const newY = Math.max(
             0,
             Math.min(pos.y, cropArea.y + cropArea.height - MIN_SIZE)
@@ -167,8 +167,8 @@ const CropImageKonva: React.FC = () => {
           break;
         }
         case "top-left": {
-          const newW = Math.max(MIN_SIZE, cropArea.x + cropArea.width - pos.x);
-          const newH = Math.max(MIN_SIZE, cropArea.y + cropArea.height - pos.y);
+          // const newW = Math.max(MIN_SIZE, cropArea.x + cropArea.width - pos.x);
+          // const newH = Math.max(MIN_SIZE, cropArea.y + cropArea.height - pos.y);
           const newXPos = Math.max(
             0,
             Math.min(pos.x, cropArea.x + cropArea.width - MIN_SIZE)
