@@ -26,7 +26,7 @@ const CropImageKonva: React.FC = () => {
     const img = new window.Image();
     img.crossOrigin = "anonymous";
     img.src =
-      "https://atm232295-s3user.vcos.cloudstorage.com.vn/docs/public/68591fbb1a0048fab50ad316.png";
+      "https://res.cloudinary.com/cake-shop/image/upload/v1724638385/movie_ticket_booking/chkm729r6eyclophslmz.jpg";
     img.onload = () => setImage(img);
   }, []);
 
