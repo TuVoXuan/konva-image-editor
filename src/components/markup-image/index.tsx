@@ -42,9 +42,13 @@ export default function MarkupImage() {
   }, [image]);
 
   function handleAddArrow() {
+    if (!stageRef.current) return;
+    const height = stageRef.current.height();
+    const width = stageRef.current.width();
+
     const newArrow: Konva.ArrowConfig = {
-      x: 200,
-      y: 250,
+      x: height / 2,
+      y: width / 2,
       points: [0, 0, 100, 100],
       pointerLength: 20,
       pointerWidth: 20,
@@ -57,9 +61,13 @@ export default function MarkupImage() {
   }
 
   function handleAddRectangle() {
+    if (!stageRef.current) return;
+    const height = stageRef.current.height();
+    const width = stageRef.current.width();
+
     const newRectangle: Konva.RectConfig = {
-      x: 100,
-      y: 100,
+      x: height / 2,
+      y: width / 2,
       width: 100,
       height: 100,
       stroke: strokeColor,
@@ -71,9 +79,13 @@ export default function MarkupImage() {
   }
 
   function handleAddCloud() {
+    if (!stageRef.current) return;
+    const height = stageRef.current.height();
+    const width = stageRef.current.width();
+
     const newCloudRectangle: Konva.RectConfig = {
-      x: 100,
-      y: 100,
+      x: height / 2,
+      y: width / 2,
       width: 100,
       height: 100,
       stroke: strokeColor,
@@ -85,9 +97,13 @@ export default function MarkupImage() {
   }
 
   function handleAddCircle() {
+    if (!stageRef.current) return;
+    const height = stageRef.current.height();
+    const width = stageRef.current.width();
+
     const newCircle: Konva.CircleConfig = {
-      x: 100,
-      y: 100,
+      x: height / 2,
+      y: width / 2,
       radius: 50,
       stroke: strokeColor,
       strokeWidth: strokeWidth,
